@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Incidencias</string>
+
+
+    <string name="txt_usuario">Usuario</string>
+    <string name="txt_contraseña">Contraseña</string>
+    <string name="button">Iniciar sesión</string>
+
+
+    <string name="txt_titulo_String">Título</string>
+    <string name="date_fecha_String">Fecha</string>
+    <string name="txt_descripcion_String">Descripción</string>
+    <string name="txt_view2_String">Tomar foto</string>
+    <string name="img_view_String">Capturar foto</string>
+    <string name="button_guardar">Guardar</string>
+    <string name="button_cancelar">Cancelar</string>
+    <string name="title_activity_login">Inicio de sesión</string>
+</resources>
