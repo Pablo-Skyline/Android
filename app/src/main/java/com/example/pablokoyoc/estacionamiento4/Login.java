@@ -35,13 +35,6 @@ public class Login extends AppCompatActivity {
 
         String driver = "com.mysql.jdbc.Driver";
 
-        try {
-            Class.forName(driver).newInstance();
-            conexionMySQL = DriverManager.getConnection()
-        } catch(SQL){
-
-        }
-
         return estadoConexión;
     }
 
