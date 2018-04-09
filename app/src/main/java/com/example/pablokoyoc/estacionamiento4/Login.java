@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -57,7 +58,7 @@ public class Login extends AppCompatActivity {
     }
 
     public void accesoDatos(View view){
-        if(enviarDatosGET(etUsuario.toString(),etContrasena.toString())!=""){
+        if(enviarDatosGET(etUsuario.getText().toString(),etContrasena.getText().toString())!=null){
             Intent siguiente = new Intent( this,MenuIncidencia.class);
             startActivity(siguiente);
         } else {
