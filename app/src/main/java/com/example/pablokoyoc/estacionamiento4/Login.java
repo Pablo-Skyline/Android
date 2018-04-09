@@ -3,6 +3,7 @@ package com.example.pablokoyoc.estacionamiento4;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -18,8 +19,6 @@ public class Login extends AppCompatActivity {
 
     private static final String url="jdbc:mysql://192.168.43.100/";
     private EditText etUsuario, etContrasena;
-    private Button btnIniciar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +27,6 @@ public class Login extends AppCompatActivity {
 
         etUsuario = (EditText)findViewById(R.id.txt_usuario);
         etContrasena = (EditText)findViewById(R.id.txt_contraseña);
-        btnIniciar = (Button) findViewById(R.id.btn_iniciar);
     }
 
     public String enviarDatosGET(String user, String password){
@@ -59,7 +57,7 @@ public class Login extends AppCompatActivity {
         return result.toString();
     }
 
-    public void accesoDatos(){
+    public void accesoDatos(View view){
         if(enviarDatosGET(etUsuario.toString(),etContrasena.toString())!=""){
             Intent siguiente = new Intent( this,MenuIncidencia.class);
             startActivity(siguiente);
