@@ -3,20 +3,22 @@ package com.example.pablokoyoc.estacionamiento4;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
-import modelo.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class Login extends AppCompatActivity {
 
     private static final String url="jdbc:mysql://192.168.43.100/";
     private EditText etUsuario, etContrasena;
+    private Button btnIniciar;
 
 
     @Override
@@ -25,37 +27,44 @@ public class Login extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         etUsuario = (EditText)findViewById(R.id.txt_usuario);
-        etContrasena = (EditText)findViewById(R.id.txt_contraseña);;
+        etContrasena = (EditText)findViewById(R.id.txt_contraseña);
+        btnIniciar = (Button) findViewById(R.id.btn_iniciar);
     }
 
-    public boolean conectarMYSQL(){
-        boolean estadoConexión= false;
-        Connection conexionMySQL = null;
+    public String enviarDatosGET(String user, String password){
+        URL url = null;
+        String linea = "";
+        int respuesta = 0;
+        StringBuilder result = null;
 
-        String usuario = etUsuario.getText().toString();
-        String contraseña = etContrasena.getText().toString();
+        try {
+            url = new URL("http://192.168.0.15/WebService/valida.php?user="+user+"&password="+password);
+            HttpURLConnection conexion = (HttpURLConnection)url.openConnection();
+            respuesta = conexion.getResponseCode();
 
-        String driver = "com.mysql.jdbc.Driver";
+            result = new StringBuilder();
 
-        return estadoConexión;
-    }
+            if(respuesta==HttpURLConnection.HTTP_OK){
+                InputStream in = new BufferedInputStream(conexion.getInputStream());
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-    public void Registrar(View view){
-        String usuario = etUsuario.getText().toString();
-        String contraseña = etContrasena.getText().toString();
+                while((linea=reader.readLine())!=null){
+                    result.append(linea);
+                }
+            }
+        } catch (Exception e){
 
-        if (usuario.length() == 0){
-            Toast.makeText(this, "Debes de ingresar un nombre", Toast.LENGTH_LONG).show();
-        } else if (contraseña.length() == 0){
-            Toast.makeText(this, "Debes de ingresar una contraseña", Toast.LENGTH_SHORT).show();
-        } else if (usuario.length() != 0 && contraseña.length() != 0){
-            Toast.makeText(this, "Inicio en proceso...", Toast.LENGTH_SHORT).show();
-            //Usuario(view);
         }
+
+        return result.toString();
     }
 
-    public void login(View view){
-        Intent siguiente = new Intent(this,MenuIncidencia.class);
-        startActivity(siguiente);
+    public void accesoDatos(){
+        if(enviarDatosGET(etUsuario.toString(),etContrasena.toString())!=""){
+            Intent siguiente = new Intent( this,MenuIncidencia.class);
+            startActivity(siguiente);
+        } else {
+            Toast.makeText(this,"El usuario o la contraseña son incorrectos",Toast.LENGTH_LONG).show();
+        }
     }
 }
