@@ -85,5 +85,62 @@ public class NuevaIncidencia extends AppCompatActivity {
 
     public void guardarMeta() {
 
+        // Obtener valores actuales de los controles
+        /*final String titulo = titulo_input.getText().toString();
+        final String descripcion = descripcion_input.getText().toString();
+        final String fecha = fecha_text.getText().toString();
+        final String categoria = categoria_spinner.getSelectedItem().toString();
+        final String prioridad = prioridad_spinner.getSelectedItem().toString();
+
+        HashMap<String, String> map = new HashMap<>();// Mapeo previo
+
+        map.put("titulo", titulo);
+        map.put("descripcion", descripcion);
+        map.put("fechaLim", fecha);
+        map.put("categoria", categoria);
+        map.put("prioridad", prioridad);
+
+        // Crear nuevo objeto Json basado en el mapa
+        JSONObject jobject = new JSONObject(map);
+
+        // Depurando objeto Json...
+        Log.d(TAG, jobject.toString());
+
+        // Actualizar datos en el servidor
+        VolleySingleton.getInstance(getActivity()).addToRequestQueue(
+                new JsonObjectRequest(
+                        Request.Method.POST,
+                        Constantes.INSERT,
+                        jobject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // Procesar la respuesta del servidor
+                                procesarRespuesta(response);
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d(TAG, "Error Volley: " + error.getMessage());
+                            }
+                        }
+
+                ) {
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> headers = new HashMap<String, String>();
+                        headers.put("Content-Type", "application/json; charset=utf-8");
+                        headers.put("Accept", "application/json");
+                        return headers;
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8" + getParamsEncoding();
+                    }
+                }
+        );
+    */
     }
 }
