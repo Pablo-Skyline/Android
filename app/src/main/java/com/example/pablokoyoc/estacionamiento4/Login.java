@@ -11,6 +11,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import modelo.*;
+
 public class Login extends AppCompatActivity {
 
     private static final String url="jdbc:mysql://192.168.43.100/";
@@ -48,7 +50,7 @@ public class Login extends AppCompatActivity {
             Toast.makeText(this, "Debes de ingresar una contraseña", Toast.LENGTH_SHORT).show();
         } else if (usuario.length() != 0 && contraseña.length() != 0){
             Toast.makeText(this, "Inicio en proceso...", Toast.LENGTH_SHORT).show();
-            //usuario(view);
+            //Usuario(view);
         }
     }
 

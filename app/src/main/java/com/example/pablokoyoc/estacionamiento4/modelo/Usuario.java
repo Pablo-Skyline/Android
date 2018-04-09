@@ -4,11 +4,11 @@ package com.example.pablokoyoc.estacionamiento4.modelo;
  * Created by KOYOC on 11/03/2018.
  */
 
-public class usuario {
+public class Usuario {
     String usuario;
     String contraseña;
 
-    public usuario(){
+    public Usuario(){
 
     }
 
