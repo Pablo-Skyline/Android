@@ -12,8 +12,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.pablokoyoc.estacionamiento4.modelo.Conexion;
-
 import org.json.JSONObject;
 
 import java.util.Date;

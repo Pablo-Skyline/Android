@@ -8,17 +8,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import org.json.JSONArray;
+import java.io.DataOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Scanner;
 
 public class Login extends AppCompatActivity {
 
     private static final String url="jdbc:mysql://192.168.43.100/";
     private EditText etUsuario, etContrasena;
+    private Button btnIniciar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,42 +27,71 @@ public class Login extends AppCompatActivity {
 
         etUsuario = (EditText)findViewById(R.id.txt_usuario);
         etContrasena = (EditText)findViewById(R.id.txt_contraseña);
+
+        btnIniciar = (Button)findViewById(R.id.btn_iniciar);
+        btnIniciar.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Thread tr = new Thread(){
+                    @Override
+                    public void run() {
+                        final String res = enviarDatosGET(etUsuario.getText().toString(),etContrasena.getText().toString());
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                int r = objJSON(res);
+                                if (r>0){
+                                    Intent i = new Intent(getApplicationContext(),MenuIncidencia.class);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(getApplicationContext(),"El usuario o la contraseña son incorrectos",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+                    }
+                };
+                tr.start();
+            }
+        });
     }
 
     public String enviarDatosGET(String user, String password){
-        URL url = null;
-        String linea = "";
-        int respuesta = 0;
-        StringBuilder result = null;
+
+        String inserccion = "user="+user+"&password="+password;
+        HttpURLConnection connection = null;
+        String respuesta = "";
 
         try {
-            url = new URL("http://192.168.0.15/WebService/valida.php?user="+user+"&password="+password);
-            HttpURLConnection conexion = (HttpURLConnection)url.openConnection();
-            respuesta = conexion.getResponseCode();
+            URL url = new URL("http://192.168.0.15/WebService/valida.php?");
+            connection = (HttpURLConnection)url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Length",""+Integer.toString(inserccion.getBytes().length));
 
-            result = new StringBuilder();
+            connection.setDoOutput(true);
+            DataOutputStream dop = new DataOutputStream(connection.getOutputStream());
+            dop.writeBytes(inserccion);
+            dop.close();
 
-            if(respuesta==HttpURLConnection.HTTP_OK){
-                InputStream in = new BufferedInputStream(conexion.getInputStream());
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+            Scanner inStream = new Scanner(connection.getInputStream());
 
-                while((linea=reader.readLine())!=null){
-                    result.append(linea);
-                }
-            }
+            while (inStream.hasNextLine())
+                respuesta+=(inStream.nextLine());
         } catch (Exception e){
 
         }
 
-        return result.toString();
+        return respuesta.toString();
     }
 
-    public void accesoDatos(View view){
-        if(enviarDatosGET(etUsuario.getText().toString(),etContrasena.getText().toString())!=null){
-            Intent siguiente = new Intent( this,MenuIncidencia.class);
-            startActivity(siguiente);
-        } else {
-            Toast.makeText(this,"El usuario o la contraseña son incorrectos",Toast.LENGTH_LONG).show();
+    public int objJSON(String respuesta){
+        int res = 0;
+        try {
+            JSONArray json = new JSONArray(respuesta);
+            if (json.length()>0)
+                res=1;
+        } catch (Exception e) {
+
         }
+        return res;
     }
 }
